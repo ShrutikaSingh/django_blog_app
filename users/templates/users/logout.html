@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %} <!--so even in our user app we can refer the 
+    templates of blog app to use the base template at here since it has lots od fthing common-->
+    {% block content %} <!-- for looping in block content that we created in the body of base.html-->
+        <h2>You have been logged out</h2>
+        <div class="border-top pt-3">
+            <small class='text-muted'>
+                <a href="{%url 'login' %}">Log In Again</a>
+            </small>
+        </div>
+    {% endblock content %}   

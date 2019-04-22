@@ -1,0 +1,31 @@
+authentication system for django 
+
+for creating register and login page
+open up prject urls.py and import login and register models
+
+to create the app named users that will handle all the user login
+>python manage.py startapp users
+
+so now ls
+and we will see have have our users app
+so now we have blog, django-project,users app
+having many built in files
+
+and now we want to create user registration page
+
+
+very important
+so the first step will be to add it in the installed apps in setting.py file in django_project
+
+so for that name you fist go to -> users app that you created -> apps.py and then copy the function UsersConfig
+
+class UsersConfig(AppConfig):
+    name = 'users'
+
+ and add it to the installed app section in settings.py
+ add   'users.apps.UsersConfig',
+
+now we have to create the register page in views.py
+so add forms in views.py that django has already created
+
+**from django.contrib.auth.forms import UserCreationForm #django has already created the form for us

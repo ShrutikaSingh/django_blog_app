@@ -1,0 +1,53 @@
+<!---we wnt user to have username
+#email,profile pic,and also the bailty to update these info
+--->
+
+
+{% extends 'blog/base.html' %} <!--so even in our user app we can refer the
+    templates of blog app to use the base template at here since it has lots od fthing common-->
+    {% load crispy_forms_tags %}
+    {% block content %} <!-- for looping in block content that we created in the body of base.html-->
+    <div class="content-section">
+      <div class="media">
+             <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+             <!-- we need to add the media route to the url patterns note there are diff methods to implement it to development and production
+             so lets open the django documentation
+             managing static files during deployment
+      https://docs.djangoproject.com/en/2.1/howto/static-files/#serving-files-uploaded-by-a-user-during-development
+             --->
+
+             <!---
+             we already did this in python shell check outh the DjangoTemplates
+             --we can also hardcode the source to the image like src="userimage.jpg"--->
+
+             <div class="media-body">
+                <h2 class="account-heading">{{ user.username }}</h2>
+                <p class="text-secondary">{{ user.email }}</p>
+              </div>
+      </div>
+
+      <form method='POST' enctype="multipart/form_data"><!--this encoding type is added to receive the profile image  in this profile here---><!--if enc type wont be there then you wont see the image--->
+          {% csrf_token %} <!--within form we have to add csf toxen and this will prevent our form from certain attacks-->
+          <fieldset><!--we will add fieldset tag which is used to group related eleemts in form-->
+              <fieldset class="form-group">
+                  <legend class='border-bottom mb-4'>Profile Info</legend> <!--the legend will give form more deatils-->
+                  {{ u_form|crispy }}   <!---and add verticalbar( | ) to use the filter , here crispy filter that we installed to add the styling to our forms  ,we have already used this | vertical bar in date filter to format our poat dates -->
+                  {{ p_form|crispy }}
+
+
+
+              </fieldset>
+              <div class='form-group'>
+                  <button class='btn btn-outlinre-info' type='submit'>Update</button>
+              </div>
+          </fieldset>
+      </form>
+
+    </div>
+    <br>
+    <br>
+        <h1>{{user.username}}</h1> <!-- to jsut display the username user is predefined is django hat refers to current logged in users-->
+        <h2>Address is:</h2>
+        <h5>Books Taken</h5>
+        <h5>Date To return</h5>
+    {% endblock content %}

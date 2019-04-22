@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %} <!--so even in our user app we can refer the 
+    templates of blog app to use the base template at here since it has lots od fthing common-->
+    {% load crispy_forms_tags %}
+    {% block content %} <!-- for looping in block content that we created in the body of base.html-->
+    <div class="content-section">
+        <form method='POST'>
+            {% csrf_token %} <!--within form we have to add csrf toxen and this will prevent our form from certain attacks-->
+            <fieldset><!--we will add fieldset tag which is used to group related eleemts in form-->
+                <fieldset class="form-group">
+                    <legend class='border-bottom mb-4'>Log In</legend> <!--the legend will give form more deatils-->
+                    <!---
+                    {{ form.as_p }}               printing the form by accessing the form that we pass in context
+                                           so just specyfing the form variable we will access all the form variable and field that we need 
+                                -->
+    
+    
+    
+                     <!--form.as_p was before when we dont have crispy_form_template till video 6-->
+                    {{ form|crispy }}   <!---display the form using and add verticalbar( | ) to use the filter , here crispy filter that we installed to add the styling to our forms  ,we have already used this | vertical bar in date filter to format our poat dates -->
+      
+                </fieldset>
+                <div class='form-group'>
+                    <button class='btn btn-outlinre-info' type='submit'>Login</button>
+                </div>
+            </fieldset> 
+        </form>
+        <div class="border-top pt-3">
+            <small class='text-muted'>
+                Already Have An Account? <a class='ml-2' href="{% url 'register' %}">Sign Up Now</a>    <!--url for register route and within the register page we want to link it to the login route-->
+            </small>
+        </div>
+    </div>
+    {% endblock content %}   

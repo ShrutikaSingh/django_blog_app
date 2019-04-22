@@ -1,0 +1,1 @@
+Creating a blog app in django to upload blogs by user.Users can do all crud operation in it and there is also a user dashboard with all basic profile features.Users can also update their password using the gmail otp system. Admin section is there to keep track of all the users and posts

@@ -1,0 +1,46 @@
+django has its own built in orm for its database
+
+orm -> object relational mapper
+
+basically it allows us to access the database in easily use object oriented way
+advantage-:
+you can use different database without changing the code
+eg. 
+	sqlite database for development/testing and 
+        postgre database for production
+all you need to setup a different database in settings but all the code
+to create the database will remain the same
+
+in orm, we can represent our database model as classes
+and here the classes are called as model 
+
+so with our blog app ,django has already created models.py file
+so within this file we need to think about what we exactly want to save in our database
+
+so we just need to change the *******models.py******* file to change the database
+
+blog/migrations/0001_initial.py is the file where we can view the sql
+
+automatically created the sqllite database
+>>>python manage.py sqlmigrate blog(name_of_app) 0001(migration_number)
+
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/Innovator_wd_django/djnago_project$ python manage.py sqlmigrate blog 0001
+BEGIN;
+--
+-- Create model Post
+--
+CREATE TABLE "blog_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "content" text NOT NULL, "date_posted" datetime NOT NULL, "author_id" integer NOT NULL REFERENCES "auth_user" ("id"));
+CREATE INDEX "blog_post_author_id_dd7a8485" ON "blog_post" ("author_id");
+COMMIT;
+
+these is the automatically sql created
+
+
+###we can run the django python shell to talk to this database interectavily
+>>>python manage.py shell
+that is python prompt and we can also use django classes here
+
+
+
+
+ 

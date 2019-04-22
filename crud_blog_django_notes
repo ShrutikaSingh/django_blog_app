@@ -1,0 +1,235 @@
+	class_based_views,ordering the post from latest first,crud
+
+we wil create class based views instead of function based views
+class views has a lot of backend functionality
+there are different kinds of class views list views,detail views create vies update views delete views etc
+blog or subscritpion etc hve list views
+ 
+eg of function based views
+def events(request):
+    return render(request,'blog/events.html',{'title':'Events'})
+
+
+right now we have home page with that gets all of our post objects and passes them to our home.html template to display/list all of them there
+therefore we can rewrite them as ListView
+
+
+-------------------------------------------------------------------------------------------
+>go in views.py
+from django.views.generic import ListView
+
+now m going to create a class since class based vieew
+class PostListView(ListView):			 #this class inherting from ListView
+	model=Post 				#the models from 
+
+techincally this is all what we need to do
+
+
+
+-------------------------------------------------------------------------------------------
+>now go to blog urls.py 
+
+url('', views.home, name='blog-home'),
+instead of the ABOVE views.home we will be using views.PostListView that we created above
+
+from .views import PostListView
+#NOW when we use class based views we cant directly call it like views.PostListView we have a method calld nameofview.as_view()
+url('', views.PostListView.as_view(), name='blog-home'),
+
+
+---------------------------------------------------------------------------------------------
+>>>on terminal python manage.py runserver
+
+we get error on server
+TemplateDoesNotExist at /
+blog/post_list.html
+
+means this is looking for a template with naming convention of <app>/<model>_<viewtype>.html
+means its looking for blog/post_list.html
+ in our case blog is the app , post is the model ,list is the viewtype
+
+so we could create a template with this naming convention
+and we also change which template we want this views to use
+and  since we a template for our home views 
+therefore we can change the template
+
+
+-------------------------------------------------------------------------------------------
+>go in views.py
+template_name='blog/home.html'
+
+class PostListView(ListView): #this class inherting from ListView
+	model=Post #the models tell ListView what model to query to
+    	template_name='blog/home.html' #<app>/<model>_<viewtype>.htm
+
+so if if we created the template it does not know what we want to name the variable that we will be looping over like in home view we called all of our posts objects in our context as posts
+eg in home view
+def home(request):
+    context= {
+        'posts':Post.objects.all() #like here we created post variable for looping over all the post
+	     }
+    return render(request,'blog/home.html',context) #returning the context that is posts
+
+but in class based view as in our ListView by default that variable is called objectlist instead of post
+so we can either go in template and change the template to loop over object list
+ or we can go in views and set one more varible in our list view and let the class know that we want one more variable to be called posts instead
+
+so set the variable within our ListView instead of changing the template
+ so just set the posts variable that we created in home view in our ListView
+
+
+context_object_name='posts'
+
+#now m going to create a class since class based vieew
+class PostListView(ListView): #this class inherting from ListView
+	model=Post #the models tell ListView what model to query to
+    	template_name='blog/home.html' #<app>/<model>_<viewtype>.html
+    	context_object_name='posts'
+
+and just seeting these three aatribute will do it
+---------------------------------------------------------------------------------------------------------------------------------------
+
+>>views.py
+######################################code ###################################
+
+def home(request):
+    context= {
+        'posts':Post.objects.all() #like here we created post variable for looping over all the post
+	     }
+    return render(request,'blog/home.html',context) #returning the context that is posts
+
+class PostListView(ListView): 			 #this class inherting from ListView
+	model=Post				 #the models tell ListView what model to query to
+    	template_name='blog/home.html'		 #<app>/<model>_<viewtype>.html
+    	context_object_name='posts'		 #context variable is used since we use the variable for posts as context in home view
+
+--------------------------------------------------
+>>>on terminal 
+>>>python manage.py runserver
+
+
+
+################################################
+
+$ now one thing that is not gud for our post is the ordering of post since the latest posts appears in the end
+so to change that the latest post appear in top 
+we have to change the order our query is making to our database
+
+--------------------------------------------------------------------------------------------------
+>>so go in views.py
+and in our PostListView
+it is as sample as adding an ordering attribute with the field that we want to order on
+
+ordering = ['date_posted'] #this will order our post from oldest to newest but we want from newest to oldest we have to put a (-)minus sign in front of date posted
+
+ordering = ['-date_posted']
+------------------------------------------------------------------------------------------
+
+>>>on terminal 
+>>>python manage.py runserver
+
+go to browser and see the order is posted from newest above
+-----------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%difference between function view and list view%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+in function view there is function definitaion and in class view there is class and in class based view we are not rendering we are just seeting the variables
+in our function view we have to actually render the function and explicitilty pass the variable/information
+
+
+def home(request):  #here we have home function
+    context= {
+        'posts':Post.objects.all() #like here we created post variable for looping over all the post
+	     }
+    return render(request,'blog/home.html',context) 
+
+class PostListView(ListView): 			 #here we have class and this class inherting from ListView
+	model=Post				 #the models tell ListView what model to query to
+    	template_name='blog/home.html'		 #<app>/<model>_<viewtype>.html
+    	context_object_name='posts'		 #context variable is used since we use the variable for posts as context in home view
+
+
+%%%%%%%%%%%%%%%% now we can just get our working class based views with just one line of code using the default syntax availabe in django
+that is using the defaults generic views 
+so if i had created a template with naming convention that our listview was looking for and it used the variable name of object inside our template as opposed to post as we used in listview then the only line of code that we needed was model='Post'
+so realy you can get working class based views in just one line if we stick to the convention perfectly
+
+so lets create a Detailview for individual post using the convention
+since we are going to looking to the details of the single post use detail view
+
+from django.views.generic import DetailView
+
+#now m going to create a class based view following the default convention
+class PostDetailView(ListView):#this class inherting from ListView
+    model=Post #the models tell ListView what model to query to
+
+----------------------------------------------------------------------------------------------
+>>now go to urls.py
+from .views import PostListView,PostDetailView
+
+now create a route that takes us to specific post
+
+**so lets see for example we want to view the post for blog one then that url would be something like post/1 or for 2 post/2
+**so to do this means to go into the specific post we have to create a url pattern that contains a varaible
+
+so to this django gives us an ability within our actual route 
+so basically we wanna create a route such that the id of the post in part of the url
+then we create a route that looks by 'post/< int :pk> that pk is the primary key
+so we can also set what kind of varible pk is like it is integer(int:) so that it will prevent from any string into the url
+
+url('post/<int: pk>',views.PostDetailView.as_view(),name='blog-home'), #pk is the primary key
+
+url('post/<int:pk>/',views.PostDetailView.as_view(),name='blog-home')
+the reason we called this variable pk is because thats what the detail view expects it to be in order to go grab that specific object
+but we can change that by adding an specific attribute class
+------------------------------------------------------------------------------------------------
+
+so lastly we need to create a template that will display our post details
+if we go to our class based view then by default our generic class based views will be looking to our template with this convention <app>/<model>_<viewtype>.html
+
+means it is looking for a template with naming convention of <app>/<model>_<viewtype>.html
+means its looking for blog/post_detail.html
+ in our case blog is the app directory, then a model name that is going to be post,then a underscore ,then the viewtype that is detail
+
+so lets create a template with that name so that it finds it automatically
+instead of we specifying the template in PostDetailView as we did in previous PostListView
+
+-----------------------------------------------------------------------------------------------
+so within template folder -> blog->create a new template post_detail.html that is the comvention nameofmodel_genericviewname.html
+
+<!--copide for home.html and make some changes like remving the for loop ,removing anchor tab for {{post.title}},
+
+<!-- so when we are using the detail view it asspects the context of this template to be called as object so ryt now we are calling this post, now we can keep these to post by changing
+an attribute in our PostDetailView in views.py but since we ant to follow the convention therefore we have to change all the post to objects ---
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%code of post_detail.html%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{% extends "blog/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.author }}</a>
+        <small class="text-muted">{{ object.date_posted|date:'F d, Y'}}</small> <!-- |date:"" is the filtering method for dates for more see the documentation-->
+      </div>
+      <h2 class="article-title">{{ object.title }}</h2><!-- no need to use ahref here--->
+      <p class="article-content">{{ object.content }}</p>
+  </div>
+  </article>
+{% endblock content %}
+
+---------------------------------------------------------------------------------------------------------
+
+>>>on terminal 
+>>>python manage.py runserver
+
+go to browser and open a single post in browser to see it is working
+
+localhost:8000/posts/1/
+
+
+
+
+
+
+

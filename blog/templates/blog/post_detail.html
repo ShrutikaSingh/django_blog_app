@@ -1,0 +1,17 @@
+<!--copide for home.html and make some changes like remving the for loop ,removing anchor tab for {{post.title}},--->
+<!-- so when we are using the detail view it asspects the context of this template to be called as object so ryt now we are calling this post, now we can keep these to post by changing
+an attribute in our PostDetailView in views.py but since we ant to follow the convention therefore we have to change all the post to objects --->
+
+{% extends "blog/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.author }}</a>
+        <small class="text-muted">{{ object.date_posted|date:'F d, Y'}}</small> <!-- |date:"" is the filtering method for dates for more see the documentation-->
+      </div>
+      <h2 class="article-title">{{ object.title }}</h2><!-- no need to use ahref here--->
+      <p class="article-content">{{ object.content }}</p>
+  </div>
+  </article>
+{% endblock content %}

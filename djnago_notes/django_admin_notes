@@ -1,0 +1,38 @@
+first stop the development server
+ctrl+c
+1)to create  a new user for super user to login to the admin page
+
+djnago_project folder>>>python manage.py createsuperuser 
+
+if you run this it will not work
+OperationalError: no such table: auth_user
+
+the problem is that we haven't created the database for the project it
+so we have to create the database
+for that we have to run few migrations
+database migrations allows us to apply changes to data base
+
+the  first migration will create the database and will add a bunch of
+initial tables and auth_user is one of the table
+
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/Innovator_wd_django/djnago_project$ python manage.py makemigrations
+
+djnago_project folder>>>>python manage.py makemigrations
+No changes detected
+since we don't have created any database and table
+so make migrations just detects the changes and prepares django to update the database
+
+in order to apply the migrations we need to run
+python mannage.py migrate
+
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/Innovator_wd_django/djnago_project$ python manage.py migrate
+
+now again run the createsuper user command
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/Innovator_wd_django/djnago_project$ python manage.py createsuperuser
+Username (leave blank to use 'shrutika'): coder@shrutika
+Email address: shrutika051220@gmail.com
+Password:@nik
+Password (again):
+Superuser created successfully.
+
+>>python manage.py runserver

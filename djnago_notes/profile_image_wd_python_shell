@@ -1,0 +1,54 @@
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/djnago_project$ python manage.py makemigrations
+
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/djnago_project$ python manage.py migrate
+
+
+
+
+using the python shell to see the description of the profile and its image
+
+
+In [1]: ls
+blog/       django_env/    djnago_project/  manage.py*     users/
+db.sqlite3  djnago_notes/  img/             profile_pics/
+
+In [2]: from django.contrib.auth.models import User
+
+In [3]: user=User.objects.filter(username='Shrutika')
+
+user=User.objects.get(username='hash')
+(sometimes we have to use get instead of filter to see the image)
+
+In [4]: user=User.objects.filter(username='Shrutika').first()
+
+In [5]: user
+Out[5]: <User: Shrutika>
+
+In [6]: user.profile
+Out[6]: <Profile: Shrutika Profile>
+
+In [7]: user.profile.image
+Out[7]: <ImageFieldFile: profile_pics/12.jpeg>
+
+In [8]: user.profile.image.width
+Out[8]: 200
+
+In [9]: user.profile.image.heigh
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-9-a406bef7d1c3> in <module>()
+----> 1 user.profile.image.heigh
+
+AttributeError: 'ImageFieldFile' object has no attribute 'heigh'
+
+In [10]: user.profile.image.height
+Out[10]: 166
+
+In [11]: user.profile.image.size
+Out[11]: 6632
+
+In [12]: user.profile.image.url
+Out[12]: 'profile_pics/12.jpeg'
+
+In [13]: exit
+

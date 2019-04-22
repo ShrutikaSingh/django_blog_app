@@ -1,0 +1,23 @@
+localhost:8000/admin/
+is not working
+done
+
+corey-part6,16:47
+form.as_p not working in that users/register.html  
+done
+
+localhost:8000/register/
+in register page 
+sign in option is not coming after already have account
+done
+
+
+if the same name is register again in localhost:8000/register/
+then the 
+user name already exists message doesnt show up
+
+
+localhost:8000/blog
+localhost:8000/blog/register/
+http://localhost:8000/admin/
+http://localhost:8000/admin/login/

@@ -1,0 +1,26 @@
+crispy form allow us to add simple tags in our template that will style our form in a bootstrap fashion 
+and we can use css too here 
+
+so we need to install crispy forms
+go to teminal and in project folder djnago_project
+
+pip install django-crispy-forms
+
+now after installing we need to tell django that this is an installed app 
+ so we can do this in seetings.py that is inside our project i.e djnago_project
+and in the installed apps section add      'crispy_forms', 
+
+and then in settings.py itself tell crispy form which css framework it wants to use
+and use bootstrap4 for css so for that go down in the seeting.py and
+ 'crispy_forms',
+
+
+now we wanna use bootstrap4 for styling
+ CRISPY_TEMPLATE_PACK = 'bootsrap4' #for using css/styling for crispy form use bootstrap 4 
+#and if we want to chnage anything else  then we can go to crispy form  documentation online and see the seetings
+#so now we our bootstrap is set and we can load it into our template and use it 
+#so go to the users/register.html where our form lives and at the top   load crispy form template
+
+ and in register.html
+  <!--form.as_p was before when we dont have crispy_form_template till video 6-->
+                {{ form|crispy }}   <!---and add verticalbar( | ) to use the filter , here crispy filter that we installed to add the styling to our forms  ,we have already used this | vertical bar in date filter to format our poat dates -->

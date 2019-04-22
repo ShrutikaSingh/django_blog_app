@@ -1,0 +1,38 @@
+creating an authetication system for user can login and log out and also set up login for usrs to access certain pages
+login page from front end
+so first of all we have to import login and logout views within our projects url model
+
+from django.contrib.auth import views as auth_views #for user login and logout
+
+add login and logout url_pattern
+url('login/',auth_views.LoginView.as_view(),name='login'),
+url('login/',auth_views.LogoutView.as_view(),name='logout'),
+
+
+login and logout are class based views so LoginView above is in camel case since its default
+
+and when we fo to http://127.0.0.1:8000/login/
+it says 
+TemplateDoesNotExist at /login/
+
+we get a exception view
+Exception Value:	
+registration/login.html  it the place where django  login view looks for template default
+
+so now we could create registration folder in our template and create a login.html template there
+but we can create login template inside our user template along side our register page that we crerated and we can tell 
+django to look out there istead of registration/login.html
+
+and in the djnago_project /url we can tell django to whre to look for login.html
+
+so in he url we  can tell django to go to which url and we wil pass the location i.eusers/login.html as an argument to the as_view()   both for login and logout
+    url('login/',auth_views.LoginView.as_view(template_name='users/login.html'),name='login'),  #pass teh template location i.e users/login.html as an argument to as_view 
+
+
+
+    and now create the login.html and logout.html template in users/template/users/ folder
+
+
+
+
+

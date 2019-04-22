@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %} <!--to use the base template at here since it has lots od fthing common-->
+{% block content %} <!-- for looping in block content that we created in the body of base.html-->
+    <h1 style="color:green">About Page</h1><!--the content of about page-->
+{% endblock content %}   
+ 
+ 
+ 
+<!-- ******************below is code for start when we are not using the base template**************
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    {% if title %}
+        <title>Django Blog - {{ title }} </title>
+    {% else %}
+        <title>Django Blog - hi</title>
+    {% endif %}
+  
+</head>
+<body>
+    <h1 style="color:green">About Page</h1>
+</body>
+</html>
+--->

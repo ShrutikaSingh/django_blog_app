@@ -1,0 +1,101 @@
+{% load static %} <!--to load the static file  i.e css and javascript that we created in static folder main.css and main.js-->
+<!---to write the code the repeated code that is similar between home and about page--->
+<!DOCTYPE html>
+<html>
+<head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}"><!--the static keyword will generate the absolute url of the static file and then acceses the blog main.css-->
+
+        {% if title %}
+            <title>Django Blog - {{ title }} </title>
+        {% else %}
+            <title>Django Blog - hi</title>
+        {% endif %}
+
+</head>
+<body>
+
+<header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+          <div class="container">
+            <a class="navbar-brand mr-4" href="{% url 'blog-home' %}">Surya Library</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <!---<a class="nav-item nav-link" href="/">Home</a>
+                    <a class="nav-item nav-link" href="/about">About</a>
+                     instead of this we can directly use our project url so that we can change one place it will change everywhere
+                --->
+                <a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a><!--blog-home is the name that we give to url pattern of home in blog/urls.py-->
+                <a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+                <a class="nav-item nav-link" href="{% url 'blog-events' %}">Events</a>
+                <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Team Endure</a>
+                <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Colleges</a>
+                <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Oppurtunities</a>
+                <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Social</a>
+                  <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Contact Us</a>
+                <a class="nav-item nav-link" href="{% url 'blog-endure' %}">Members</a>
+
+
+              </div>
+              <!-- Navbar Right Side -->
+              <!--means the user is currently logged in therefore display logout tab else display login-->
+              <div class="navbar-nav">
+                {% if user.is_authenticated %} <!--means the user is currently logged in therefore display logout tab else display login-->
+                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a><!--displaying the profile button only when the users are logged in-->
+                <a class="nav-item nav-link" href="{%url 'logout' %}">Logout</a>
+                {% else %}
+                  <a class="nav-item nav-link" href="{%url 'login' %}">Login</a>
+               <!--- <a class="nav-item nav-link" href="/register">Register</a> --->
+                  <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                {% endif %}
+              </div>
+            </div>
+         </div>
+        </nav>
+</header>
+<main role="main" class="container">
+        <div class="row">
+          <div class="col-md-8"><!--block is a section where child template can override the data-->
+          <!-- this section is for the alert message to display in home page for only one time after redirecting that we are getting from register/ route i.e from djnago_project/blog/templates/users/register.html or localhost:8000/register/-->
+            {% if messages %}
+              {% for message in messages %}
+              <div class="alert alert-{{message.tags}}"> <!--tag can be success ,warning,info,danger,etc-->
+                {{ message }} <!-- to see the alert message in register/ route-->
+              </div>
+              {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}<!--- the content block is what the other template like home.html or about.html can override & when they override the content block with data it will replace that data in html at this location-->
+
+          </div>
+          <div class="col-md-4">
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <li class="list-group-item list-group-item-light">Latest Books</li>
+                  <li class="list-group-item list-group-item-light">Announcements</li>
+                  <li class="list-group-item list-group-item-light">Calendars</li>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+</main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+</html>

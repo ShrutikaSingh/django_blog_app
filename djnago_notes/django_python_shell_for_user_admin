@@ -1,0 +1,102 @@
+shrutika@shrutika-HP-ProBook-440-G4:~/Desktop/Innovator_wd_django/djnago_project$ python manage.py shell
+Python 3.6.7 (default, Oct 22 2018, 11:32:17)
+>>> from blog.models import Post
+>>> from django.contrib.auth.models import User
+>>> User.objects.all()
+<QuerySet [<User: coder@shrutika>, <User: @manthan>]>
+>>> User.objects.first()
+<User: coder@shrutika>
+>>> User.objects.last()
+<User: @manthan>
+>>> User.objects.filter(username='@shrutika')
+<QuerySet []>
+>>> User.objects.filter(username='coder@shrutika')
+<QuerySet [<User: coder@shrutika>]>
+>>> User.objects.filter(username='coder@shrutika').first() # if multiple user with same name
+<User: coder@shrutika>
+
+>>> user = User.objects.filter(username='coder@shrutika').first() #storing the user in user variable
+>>> user
+<User: coder@shrutika>
+
+now we can see the various attributes of user
+>>> user.id 
+1
+>>> user.pk #primary key
+1
+>>> user = User.objects.get(id=1) #getting the user by id
+>>> user
+<User: coder@shrutika>
+>>> Post.objects.all()
+<QuerySet []>  #since there are no posts
+>>> post_1 = Post(title= 'Blog 1', content='First Post content!', author=user) #for creating the post by user
+>>> Post.objects.all()
+<QuerySet []>
+#still the post is empty because we created  the post object as the above post_1 but we dint save it to the database
+>>> post_1.save() # to save the above created post in database
+>>> Post.objects.all() #now we will get the queryset
+<QuerySet [<Post: Post object>]>
+
+to get the post with decription we have to tell what we want to see when we print it out and we can do this by 
+****************going to models.py file********
+we have to define __str__(self)__
+
+    def __str__(self): #to get the posts with descrpition in python shell Post.objects.all()
+        return self.title
+>>>exit() #in oreder to get those changes to affect we have to exit and open a backup and in this process we will lose the user variable that we are working with
+>>python manage.py shell
+>>> from blog.models import Post
+>>> from django.contrib.auth.models import User
+>>> Post.objects.all()
+<QuerySet [<Post: Blog 1>]>
+now we are getting the title as Blog that we entered in __str__(self) method
+
+#since we lost the user cauz we do exit() therefore create the user
+>>> user = User.objects.filter(username='coder@shrutika') # filter wd the user name you created earlier
+>>user
+>>> user = User.objects.filter(username='coder@shrutika').first()
+>>> user
+<User: coder@shrutika>
+
+now create the second post
+>>> post_2=Post(title='Blog 2', content = '2nd post content', author_id=user.id) #getting autor by id
+>>> post_2.save # always remember to save it to database
+<bound method Model.save of <Post: Blog 2>>
+>>> Post.objects.all() #for seeing the post
+<QuerySet [<Post: Blog 1>]>
+
+>>> post = Post.objects.first() #storing it in post variable
+>>> post.content  #displaying the content using above created post variable
+'First Post content!'
+>>> post.date_posted
+ #though we dint added the date it gets automatically added bcz of that date wala function that we made earlier 
+# we can also get the user email address by just the post method
+datetime.datetime(2019, 1, 26, 13, 10, 10, 840441, tzinfo=<UTC>)
+>>> post.author
+<User: coder@shrutika>
+#so by just only post method we can get the user
+>>> post.author.email
+'shrutika051220@gmail.com'
+#lets see how we will get all of the post written by a user
+#django adds a queryset to user module to do this
+#naming convention of the query set for doing this is:-
+.nameofrelatedmodel_set        (underscore set) _set id very important
+.modelname_set
+here .post_set         
+>>> user.post_set
+<django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x7f43d7cc4780> #its non readable
+#so if we want to get all of the post taht the user created
+>>> user.post_set.all()
+<QuerySet [<Post: Blog 1>]>
+#now we have the query set of the post that the user has created
+
+#now we can actually create the post using the post_set method
+>> user.post_set.create(title='blog 3',content='3rd post content')
+<Post: blog 3>
+#here we also dont need to save it to database manually,it automatically saves it to db
+>>> user.post_set.all() #check out the post by user
+<QuerySet [<Post: Blog 1>, <Post: blog 3>]>
+>>> Post.objects.all() #to see all the total posts created
+<QuerySet [<Post: Blog 1>, <Post: blog 3>]>
+>>>exit()
+

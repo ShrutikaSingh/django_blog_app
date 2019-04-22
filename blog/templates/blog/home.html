@@ -1,0 +1,76 @@
+{% extends "blog/base.html" %} <!--to use the base template at here since it has lots od fthing common-->
+<!--the below will be content of the actual home page different from other pages-->
+<!--for putting the information that will go in the base.html ka block content ke place pe-->
+{% block content %} <!-- for looping in block content that we created in the body of base.html-->
+    {% for post in posts %}  <!--the posts is similiar to the key posts of the context dictionary of views.py--->
+  <!---
+    starting ka html for posts
+    <h1>{{post.title}}</h1>
+    <p>By {{post.author}} on {{post.date_posted}}</p>
+    <p>{{post.content}}</p>
+
+    --->
+        <article class="media content-section">
+                <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="#">{{ post.author }}</a>
+                    <small class="text-muted">{{ post.date_posted|date:'F d, Y'}}</small> <!-- |date:"" is the filtering method for dates for more see the documentation-->
+                </div>
+                <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+                </div>
+
+<!---for book--->
+<div class="row"  height="200px">
+      <h2><a class="article-book" href="#">{{ book }}</a></h2>
+  <div class="col-md-4">
+<img src="">
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+  </div>
+<div class="col-md-8">
+
+
+  </div>
+</div>
+
+
+
+        </article>
+    {% endfor %}
+{% endblock content %}
+
+
+
+
+<!-- ******************in start when we are not using the base template**************  -->
+<!--- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    {% if title %}
+    <title>Django Blog - {{ title }} </title>
+    {% else %}
+    <title>Django Blog - hi</title>
+    {% endif %}
+</head>
+<body>
+    <h1>Blog-Home!</h1>
+     to use the posts dictionary we created in views.py,we have to loop through the posts to display on home page-->
+    <!--- the templating engine is very similar to ginger2 -->
+    <!--the templating engine allows us to write code within our template using %%-->
+<!--
+    {% for post in posts %}  the posts is similiar to the key posts of the context dictionary of views.py
+        <h1>{{post.title}}</h1>
+        <p>By {{post.author}} on {{post.date_posted}}</p>
+        <p>{{post.content}}</p>
+    {% endfor %}       we always need to end the loops eg. end for,end if,end while,etc
+</body>
+</html>
+-->
